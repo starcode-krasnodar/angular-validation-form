@@ -34,6 +34,7 @@
                                 <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.driverLicense)}">
                                     <label for="driver-license" class="control-label">Водительские права</label>
                                     <input type="text" name="driverLicense" id="driver-license" class="form-control" autofocus
+                                        data-toggle="tooltip" data-placement="bottom" title="Формат следующий 12 XX 123456, где X - цифра или русская буква, остальные цифры"
                                         ng-model="driverLicense" capitalize strip-latin
                                         required driver-license-validator>
                                     <p ng-if="hasError(exampleForm.driverLicense)" class="help-block">
@@ -43,6 +44,7 @@
                                 <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.registerNumber)}">
                                     <label for="register-number" class="control-label">Регистрационный номер</label>
                                     <input type="text" name="registerNumber" id="register-number" class="form-control"
+                                        data-toggle="tooltip" data-placement="bottom" title="Формат ввода А 001 АА 77 или А 001 АА 777. Т.е. в конце может быть как 2 так и три символа"
                                         ng-model="registerNumber" capitalize strip-latin
                                         required register-number-validator>
                                     <p ng-if="hasError(exampleForm.registerNumber)" class="help-block">
@@ -65,5 +67,10 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="app.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
 </body>
 </html>
