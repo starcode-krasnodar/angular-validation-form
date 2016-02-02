@@ -1,2 +1,8 @@
-# Validate example #
-Example client validation.
+# Angular Validation Form #
+Angular validation form example.
+
+Before run, type
+
+```
+bower install
+```
