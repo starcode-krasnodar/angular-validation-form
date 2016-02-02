@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Validation Form Example</title>
 
-    <!-- Bootstrap -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -21,7 +19,7 @@
         .wrap { margin-top: 20px; }
     </style>
 </head>
-<body>
+<body ng-app="validationFormExample" ng-controller="mainController">
 
     <div class="wrap">
         <div class="container">
@@ -30,19 +28,32 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Validation Form Example</div>
                         <div class="panel-body">
-                            <form>
-                                <div class="form-group">
+
+                            <!-- example validation form -->
+                            <form method="post" name="exampleForm" novalidate>
+                                <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.driverLicense)}">
                                     <label for="driver-license" class="control-label">Водительские права</label>
-                                    <input type="text" name="driver-license" id="driver-license" class="form-control">
+                                    <input type="text" name="driverLicense" id="driver-license" class="form-control" autofocus
+                                        ng-model="driverLicense" capitalize strip-latin
+                                        required driver-license-validator>
+                                    <p ng-if="hasError(exampleForm.driverLicense)" class="help-block">
+                                        Это поле обязательно для заполнения
+                                    </p>
                                 </div>
-                                <div class="form-group">
+                                <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.registerNumber)}">
                                     <label for="register-number" class="control-label">Регистрационный номер</label>
-                                    <input type="text" name="register-number" id="register-number" class="form-control">
+                                    <input type="text" name="registerNumber" id="register-number" class="form-control"
+                                        ng-model="registerNumber" capitalize strip-latin
+                                        required register-number-validator>
+                                    <p ng-if="hasError(exampleForm.registerNumber)" class="help-block">
+                                        Это поле обязательно для заполнения
+                                    </p>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" name="submit-btn" class="btn btn-default" value="Отправить">
+                                    <input type="submit" name="submit-btn" class="btn btn-default" value="Отправить" >
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -50,9 +61,9 @@
         </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
