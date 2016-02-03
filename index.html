@@ -19,7 +19,7 @@
         .wrap { margin-top: 20px; }
     </style>
 </head>
-<body ng-app="validationFormExample" ng-controller="mainController">
+<body ng-app="validationFormExample" ng-controller="mainController as controller">
 
     <!-- form wrap -->
     <div class="wrap">
@@ -31,26 +31,27 @@
                         <div class="panel-body">
 
                             <!-- example validation form -->
-                            <form method="post" name="exampleForm" novalidate>
-                                <div class="form-group" ng-class="{ 'has-error': driverLicenseErrors.length != 0}">
+                            <form method="post" name="exampleForm" ng-submit="controller.submit()" novalidate>
+                                <div class="form-group" ng-class="{ 'has-error': controller.driverLicenseErrors.length != 0}">
                                     <label for="driver-license" class="control-label">Водительские права</label>
                                     <input type="text" name="driverLicense" id="driver-license" class="form-control"
                                         to-upper-case
-                                        ng-model="driverLicense" ng-blur="driverLicenseValidate(driverLicense)" ng-change="driverLicenseChange(driverLicense)">
-                                    <div ng-if="driverLicenseErrors.length != 0" class="help-block">
+                                        ng-model="controller.driverLicense" ng-blur="controller.driverLicenseValidate(controller.driverLicense)"
+                                        ng-change="controller.driverLicenseChange(controller.driverLicense)">
+                                    <div ng-if="controller.driverLicenseErrors.length != 0" class="help-block">
                                         <ul>
-                                            <li ng-repeat="error in driverLicenseErrors">{{ error }}</li>
+                                            <li ng-repeat="error in controller.driverLicenseErrors">{{ error }}</li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="form-group" ng-class="{ 'has-error': registerNumberErrors.length != 0}">
+                                <div class="form-group" ng-class="{ 'has-error': controller.registerNumberErrors.length != 0}">
                                     <label for="register-number" class="control-label">Регистрационный номер</label>
                                     <input type="text" name="registerNumber" id="register-number" class="form-control"
                                         to-upper-case
-                                        ng-model="registerNumber" ng-blur="registerNumberValidate(registerNumber)" ng-change="registerNumberChange(registerNumber)">
-                                    <div ng-if="registerNumberErrors.length != 0" class="help-block">
+                                        ng-model="controller.registerNumber" ng-blur="controller.registerNumberValidate(controller.registerNumber)">
+                                    <div ng-if="controller.registerNumberErrors.length != 0" class="help-block">
                                         <ul>
-                                            <li ng-repeat="error in registerNumberErrors">{{ error }}</li>
+                                            <li ng-repeat="error in controller.registerNumberErrors">{{ error }}</li>
                                         </ul>
                                     </div>
                                 </div>
