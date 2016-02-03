@@ -32,7 +32,7 @@
 
                             <!-- example validation form -->
                             <form method="post" name="exampleForm" novalidate>
-                                <div ng-class="{ 'form-group': true, 'has-error': driverLicenseErrors.length != 0}">
+                                <div class="form-group" ng-class="{ 'has-error': driverLicenseErrors.length != 0}">
                                     <label for="driver-license" class="control-label">Водительские права</label>
                                     <input type="text" name="driverLicense" id="driver-license" class="form-control"
                                         to-upper-case
@@ -43,7 +43,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-class="{ 'form-group': true, 'has-error': registerNumberErrors.length != 0}">
+                                <div class="form-group" ng-class="{ 'has-error': registerNumberErrors.length != 0}">
                                     <label for="register-number" class="control-label">Регистрационный номер</label>
                                     <input type="text" name="registerNumber" id="register-number" class="form-control"
                                         to-upper-case
