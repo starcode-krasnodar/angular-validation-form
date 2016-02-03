@@ -1,76 +1,84 @@
 var app = angular.module("validationFormExample", []);
 
 app.controller("mainController", function($scope) {
+    // модели
     $scope.driverLicense = null;
     $scope.registerNumber = null;
 
-    $scope.hasError = function (field) {
-        return (field.$invalid && field.$touched);
-    }
-});
+    // ошибки валидации
+    $scope.driverLicenseErrors = [];
+    $scope.registerNumberErrors = [];
 
-app.directive('stripLatin', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attrs, mCtrl) {
-            var stripLatin = function(value) {
-                if (value == undefined) {
-                    value = '';
-                }
-                var stripped = value.replace(/[a-z]/i, '');
-                if (stripped != value) {
-                    mCtrl.$setViewValue(stripped);
-                    mCtrl.$render();
-                }
-                return stripped;
-            };
-            mCtrl.$parsers.push(stripLatin);
-            stripLatin(scope[attrs.ngModel]);
+    /**
+     * Вызывается при изменении значения поля водительских прав.
+     *
+     * @param driverLicense
+     */
+    $scope.driverLicenseChange = function(driverLicense) {
+        if (driverLicense.substr(2, 2) != '' && driverLicense.substr(2, 2).match(/[\d+О]/i)) {
+            $scope.driverLicense = driverLicense.replace(/О/i, 0);
+        }
+    };
+
+    /**
+     * Валидация водительских прав.
+     *
+     * @param driverLicense string
+     */
+    $scope.driverLicenseValidate = function(driverLicense) {
+        $scope.driverLicenseErrors = [];
+
+        if (driverLicense == null || driverLicense == '') {
+            $scope.driverLicenseErrors.push('Поле не может быть пустым');
+        } else {
+            if (driverLicense.substr(0, 2) != '' && !driverLicense.substr(0, 2).match(/^\d{2}$/)) {
+                $scope.driverLicenseErrors.push('Первые два символа, должны быть цифрами');
+            }
+            if (driverLicense.substr(2, 2) != '' && !driverLicense.substr(2, 2).match(/^(\d{2}|[А-Я]{2})$/)) {
+                $scope.driverLicenseErrors.push('На месте ХХ могут быть цифры или русские буквы в верхнем регистре');
+            }
+            if (driverLicense.substr(4) == '' || !driverLicense.substr(4).match(/^\d{6}$/)) {
+                $scope.driverLicenseErrors.push('Последние шесть символов должны быть цифрами');
+            }
+        }
+    };
+
+    /**
+     * Валидация регистрационного номера.
+     *
+     * @param registerNumber string
+     */
+    $scope.registerNumberValidate = function(registerNumber) {
+        $scope.registerNumberErrors = [];
+
+        if (registerNumber == null || registerNumber == '') {
+            $scope.registerNumberErrors.push('Поле не может быть пустым');
+        } else {
+            if (!registerNumber.match(/^([А-Я])(\d{3})([А-Я]{2})(\d{2,3})$/)) {
+                $scope.registerNumberErrors.push('Неверный формат, допустим следующий шаблон А 123 АА 12 или А 123 АА 123');
+            }
         }
     };
 });
 
-app.directive('capitalize', function() {
+/**
+ * Директива to-upper-case, преобразующая все символы в нижнем регистре в верхний.
+ */
+app.directive('toUpperCase', function() {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, mCtrl) {
-            var capitalize = function(value) {
-                if(value == undefined) {
-                    value = '';
+        link: function(scope, element, attributes, modelCtrl) {
+            var toUpperCase = function(value) {
+                value = value || '';
+                var valueUpperCase = value.toUpperCase();
+                if(valueUpperCase !== value) {
+                    modelCtrl.$setViewValue(valueUpperCase);
+                    modelCtrl.$render();
                 }
-                var capitalized = value.toUpperCase();
-                if(capitalized !== value) {
-                    mCtrl.$setViewValue(capitalized);
-                    mCtrl.$render();
-                }
-                return capitalized;
+                return valueUpperCase;
             };
-            mCtrl.$parsers.push(capitalize);
-            capitalize(scope[attrs.ngModel]);  // capitalize initial value
+            modelCtrl.$parsers.push(toUpperCase);
+            toUpperCase(scope[attributes.ngModel]);
         }
     };
-});
-
-app.directive("driverLicenseValidator", function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attr, mCtrl) {
-            var validator = function(value) {
-                return value;
-            };
-            mCtrl.$parsers.push(validator);
-        }
-    };
-});
-
-app.directive("registerNumberValidator", function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, element, attr, mCtrl) {
-            var validator = function(value) {
-                return value;
-            };
-            mCtrl.$parsers.push(validator);
-        }
-    }
 });

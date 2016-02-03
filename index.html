@@ -21,6 +21,7 @@
 </head>
 <body ng-app="validationFormExample" ng-controller="mainController">
 
+    <!-- form wrap -->
     <div class="wrap">
         <div class="container">
             <div class="row">
@@ -31,28 +32,30 @@
 
                             <!-- example validation form -->
                             <form method="post" name="exampleForm" novalidate>
-                                <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.driverLicense)}">
+                                <div ng-class="{ 'form-group': true, 'has-error': driverLicenseErrors.length != 0}">
                                     <label for="driver-license" class="control-label">Водительские права</label>
-                                    <input type="text" name="driverLicense" id="driver-license" class="form-control" autofocus
-                                        data-toggle="tooltip" data-placement="bottom" title="Формат следующий 12 XX 123456, где X - цифра или русская буква, остальные цифры"
-                                        ng-model="driverLicense" capitalize strip-latin
-                                        required driver-license-validator>
-                                    <p ng-if="hasError(exampleForm.driverLicense)" class="help-block">
-                                        Это поле обязательно для заполнения
-                                    </p>
+                                    <input type="text" name="driverLicense" id="driver-license" class="form-control"
+                                        to-upper-case
+                                        ng-model="driverLicense" ng-blur="driverLicenseValidate(driverLicense)" ng-change="driverLicenseChange(driverLicense)">
+                                    <div ng-if="driverLicenseErrors.length != 0" class="help-block">
+                                        <ul>
+                                            <li ng-repeat="error in driverLicenseErrors">{{ error }}</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div ng-class="{ 'form-group': true, 'has-error': hasError(exampleForm.registerNumber)}">
+                                <div ng-class="{ 'form-group': true, 'has-error': registerNumberErrors.length != 0}">
                                     <label for="register-number" class="control-label">Регистрационный номер</label>
                                     <input type="text" name="registerNumber" id="register-number" class="form-control"
-                                        data-toggle="tooltip" data-placement="bottom" title="Формат ввода А 001 АА 77 или А 001 АА 777. Т.е. в конце может быть как 2 так и три символа"
-                                        ng-model="registerNumber" capitalize strip-latin
-                                        required register-number-validator>
-                                    <p ng-if="hasError(exampleForm.registerNumber)" class="help-block">
-                                        Это поле обязательно для заполнения
-                                    </p>
+                                        to-upper-case
+                                        ng-model="registerNumber" ng-blur="registerNumberValidate(registerNumber)" ng-change="registerNumberChange(registerNumber)">
+                                    <div ng-if="registerNumberErrors.length != 0" class="help-block">
+                                        <ul>
+                                            <li ng-repeat="error in registerNumberErrors">{{ error }}</li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="submit" name="submit-btn" class="btn btn-default" value="Отправить" >
+                                    <input type="submit" name="submit-btn" class="btn btn-default" value="Отправить">
                                 </div>
                             </form>
 
